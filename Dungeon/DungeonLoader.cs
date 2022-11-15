@@ -1,27 +1,25 @@
 using AFK_Dungeon_Lib.Dungeon.DungeonComponents;
 using AFK_Dungeon_Lib.Dungeon.DungeonFactories;
+using AFK_Dungeon_Lib.IOC;
 
 namespace AFK_Dungeon_Lib.Dungeon;
 public class DungeonLoader
 {
-	public int InitialZoneLevel { get; private set; }
-	public int CurrentLevel { get; private set; }
-	public int Scaling { get; private set; }
-	public List<Zone> Zones { get; private set; }
+	public int InitialZoneLevel { get; }
+	public int CurrentZoneLevel { get; private set; }
+	public int Scaling { get; }
+	public List<Zone> Zones { get; }
+	readonly ZoneFactory zf;
 
-	public DungeonLoader(int initialZoneLevel, int scaling) : this(initialZoneLevel, initialZoneLevel, scaling) { }
-
-	//default - no custom scaling
-	public DungeonLoader() : this(1, 1, 1) { }
-
-	public DungeonLoader(int initialZoneLevel, int currentZoneLevel, int scaling)
+	public DungeonLoader(GameConfig gc, ZoneFactory zf)
 	{
-		InitialZoneLevel = initialZoneLevel;
-		CurrentLevel = currentZoneLevel;
-		Scaling = scaling;
+		InitialZoneLevel = gc.InitialZoneLevel;
+		CurrentZoneLevel = gc.CurrentZoneLevel;
+		Scaling = gc.ZoneScaling;
+		this.zf = zf;
 		Zones = new List<Zone>
 		{
-			ZoneFactory.GenerateZone(Scaling, currentZoneLevel)
+			zf.GenerateZone(CurrentZoneLevel)
 		};
 	}
 
@@ -29,7 +27,7 @@ public class DungeonLoader
 
 	public Zone GetNextZone()
 	{
-		CurrentLevel++;
+		CurrentZoneLevel++;
 		Zone z = Zones[0];
 		Zones.RemoveAt(0);
 		if (Zones.Count == 0)
@@ -40,6 +38,6 @@ public class DungeonLoader
 	}
 	public void AddNewZone(int currentZoneLevel)
 	{
-		Zones.Add(ZoneFactory.GenerateZone(Scaling, currentZoneLevel + 1));
+		Zones.Add(zf.GenerateZone(currentZoneLevel + 1));
 	}
 }

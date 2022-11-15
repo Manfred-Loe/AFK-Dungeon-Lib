@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AFK_Dungeon_Lib.Dungeon.DungeonObjects;
 
 namespace AFK_Dungeon_Lib.Controllers
 {
-    public interface IEntityController
-    {
-        
-    }
+	public interface IEntityController
+	{
+		public void AdvanceTurn(IPawnEntity pawn);
+	}
 }

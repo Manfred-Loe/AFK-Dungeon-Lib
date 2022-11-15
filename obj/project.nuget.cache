@@ -1,10 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "yHkUgnhe5uC+G5356pdk93KHIgEzCKcnxTwSh8RCFtxWkMbfOeUTcJ3brCBclS3BLO/OdsLrfaJaCdOeKndoJA==",
+  "dgSpecHash": "ZTNw//Ayg3dt989b2LnaTdww1IoyHOEDMn6iZ8tizM14Pcs664HxSCLsLji24i+vGImQOl9iMMYexF0pYR3rXg==",
   "success": true,
   "projectFilePath": "/d/Projects/Unity/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
   "expectedPackageFiles": [
-    "/home/hells/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512"
+    "/home/hells/.nuget/packages/microsoft.netcore.platforms/1.0.1/microsoft.netcore.platforms.1.0.1.nupkg.sha512",
+    "/home/hells/.nuget/packages/microsoft.netcore.targets/1.0.1/microsoft.netcore.targets.1.0.1.nupkg.sha512",
+    "/home/hells/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/home/hells/.nuget/packages/simpleinjector/5.4.1/simpleinjector.5.4.1.nupkg.sha512",
+    "/home/hells/.nuget/packages/system.componentmodel/4.0.1/system.componentmodel.4.0.1.nupkg.sha512",
+    "/home/hells/.nuget/packages/system.runtime/4.1.0/system.runtime.4.1.0.nupkg.sha512"
   ],
   "logs": []
 }

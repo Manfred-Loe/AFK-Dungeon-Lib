@@ -3,69 +3,36 @@ using AFK_Dungeon_Lib.Pawns;
 using AFK_Dungeon_Lib.Pawns.Hero;
 using AFK_Dungeon_Lib.Pawns.Enemies;
 using AFK_Dungeon_Lib.Dungeon.DungeonObjects;
+using AFK_Dungeon_Lib.IOC;
+using AFK_Dungeon_Lib.Dungeon.DungeonFactories;
 
 namespace AFK_Dungeon_Lib.Dungeon;
 
 public class DungeonDriver
 {
 
-	public DateTime TimeStart;
-	public DateTime TimeEnd;
-
-	public Zone CurrentZone;
-	public Floor CurrentFloor;
-	public Room CurrentRoom;
-
-	public int EnemiesKilledCount;
-	public int ClearedRoomCount;
-	public List<HeroEntity> Heroes;
-	public List<EnemyEntity> CurrentEnemies;
-	public List<IPawnEntity> CurrentEntities;
-
-	public DungeonDriver(List<IPawn> heroes, int initialZone, int currentZone, int currentFloor, int currentRoom)
+	readonly DungeonState DungeonState;
+	DungeonRandom random;
+	public DungeonDriver(List<IPawn> heroes, GameConfig gc, ZoneFactory zf, DungeonRandom random)
 	{
-		//initialize lists and data
-		Heroes = new();
-		CurrentEnemies = new();
-		CurrentEntities = new();
-		EnemiesKilledCount = 0;
-		//fill heroes
-		for (int i = 0; i < heroes.Count; i++)
-		{
-			if (heroes[i] is Hero h)
-			{
-				Heroes.Add(new(h, h.Position));
-			}
-		}
-
+		var dl = new DungeonLoader(gc, zf);
 		//load zone/floor/room
-		var dl = new DungeonLoader(initialZone, currentZone, 1);
-		CurrentZone = dl.GetCurrentZone();
-		CurrentFloor = CurrentZone.GetFloorByNumber(currentFloor);
-		CurrentRoom = CurrentFloor.GetRoomByNumber(currentRoom);
-
-		//load enemies in first room
-		for (int i = 0; i < CurrentRoom.Enemies.Count; i++)
-		{
-			CurrentEnemies.Add(new(CurrentRoom.Enemies[i], CurrentRoom.Enemies[i].Position));
-		}
-
-		if (CurrentRoom is BossRoom b)
-		{
-			CurrentEnemies.Add(new(b.Boss, b.BossPosition));
-		}
-		if (CurrentRoom is MiniBossRoom m)
-		{
-			CurrentEnemies.Add(new(m.Miniboss, m.MinibossPosition));
-		}
-
-		//Determine turn order
-		CurrentEntities = GetInitialTurnOrder(Heroes, CurrentEnemies);
-
-		//set start time
-		TimeStart = DateTime.Now;
+		var zone = dl.GetCurrentZone();
+		var floor = zone.GetFloorByNumber(gc.CurrentFloor);
+		var room = floor.GetRoomByNumber(gc.CurrentRoom);
+		DungeonState = new(heroes, zone, floor, room, 0, 0);
+		this.random = random;
 	}
 
+	public void NextStep()
+	{
+		for (int i = 0; i < DungeonState.CurrentEntities.Count; i++)
+		{
+			//Next Step
+			DungeonState.CurrentEntities[i].NextStep();
+			//update DungeonState
+		}
+	}
 	private static int CompareDexterity(IPawnEntity x, IPawnEntity y)
 	{
 		int returnValue;
@@ -104,10 +71,6 @@ public class DungeonDriver
 		turns.AddRange(heroes);
 		turns.AddRange(enemies);
 		turns.Sort(CompareDexterity);
-
 		return turns;
 	}
-
-
-
 }

@@ -2,8 +2,9 @@
 using AFK_Dungeon_Lib.Utility;
 
 namespace AFK_Dungeon_Lib.Items.Factories;
-public static class BootsFactory
+public class BootsFactory
 {
+	readonly GameRandom random;
 	/*boots are always base vitality, however there are 3 types
     1) Phys: Vit, Dex/Str
     2) Mage: Vit, Wis/Int
@@ -12,10 +13,15 @@ public static class BootsFactory
     what the base was.
     Similar to chests, the numbers can be skewed towards any of the stats
     */
-	public static Boots CraftBoots(Rarity r)
+
+	public BootsFactory(GameRandom random)
+	{
+		this.random = random;
+	}
+
+	public Boots CraftBoots(Rarity r)
 	{
 		Rarity rarity = r;
-		Random random = new();
 		float base1 = 10f;
 		float base2 = 10f;
 		float base3 = 10f;
@@ -32,7 +38,7 @@ public static class BootsFactory
 		//presently a is favored to be larger, roughly "45" average
 		//meaning the other two split "55" approx evenly
 		int a, b, c, max;
-		a = random.Next(10, 81);
+		a = random.Random.Next(10, 81);
 		if (a == 80)
 		{
 			b = 10;
@@ -41,12 +47,12 @@ public static class BootsFactory
 		else
 		{
 			max = 90 - a;
-			b = random.Next(10, max + 1);
+			b = random.Random.Next(10, max + 1);
 			c = 100 - a - b;
 		}
 		//assign them randomly between 0-5 for each shuffle
 		int stat1, stat2, stat3;
-		int assignment = random.Next(0, 6);
+		int assignment = random.Random.Next(0, 6);
 		switch (assignment)
 		{
 			case 0: stat1 = a; stat2 = b; stat3 = c; break;
@@ -59,7 +65,7 @@ public static class BootsFactory
 		}
 
 		//determine type of boots
-		int bootType = random.Next(0, 3);
+		int bootType = random.Random.Next(0, 3);
 		listStats.Add(EquipmentMod.Vitality);
 		switch (bootType)
 		{
@@ -99,13 +105,13 @@ public static class BootsFactory
 		}
 		List<EquipmentStat> stats = new();
 
-		int index = random.Next(0, listStats.Count);
+		int index = random.Random.Next(0, listStats.Count);
 		stats.Add(new EquipmentStat(listStats[index], base1));
 		listStats.RemoveAt(index);
 		if (rarity == Rarity.Rare)
 		{
 			//figure out second stat if Rare
-			index = random.Next(0, listStats.Count);
+			index = random.Random.Next(0, listStats.Count);
 			stats.Add(new EquipmentStat(listStats[index], base2));
 		}
 		else if (rarity == Rarity.Legendary || rarity == Rarity.Unique) //unique to be removed when uniques implemented

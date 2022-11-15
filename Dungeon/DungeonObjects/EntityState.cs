@@ -2,7 +2,7 @@ namespace AFK_Dungeon_Lib.Dungeon.DungeonObjects;
 public enum EntityState
 {
 	Wait,
-	Attack,
+	TakeAction,
 	Dead,
 	Incapacitated,
 	Untargetable
@@ -15,7 +15,7 @@ static class EntityEnumExtension
 		return entityEnum switch
 		{
 			EntityState.Wait => "Wait",
-			EntityState.Attack => "Attack",
+			EntityState.TakeAction => "Take Action",
 			EntityState.Dead => "Dead",
 			EntityState.Incapacitated => "Incapacitated",
 			EntityState.Untargetable => "Untargetable",

@@ -11,5 +11,10 @@ namespace AFK_Dungeon_Lib.Utility
 		{
 			return (float)Math.Round(value, decimalPlaces);
 		}
+
+		public static int Distance(Coordinate a, Coordinate b)
+		{
+			return Math.Abs(a.X - b.X) + Math.Abs(a.Y + b.Y);
+		}
 	}
 }

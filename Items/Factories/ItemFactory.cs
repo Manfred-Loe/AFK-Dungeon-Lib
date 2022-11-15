@@ -3,37 +3,53 @@ using AFK_Dungeon_Lib.Items.Equipment.Weapon;
 using AFK_Dungeon_Lib.Items.Factories;
 
 namespace AFK_Dungeon_Lib.Items.Factories;
-public static class ItemFactory
+public class ItemFactory
 {
+	GameRandom random;
+	HelmetFactory hf;
+	ChestFactory cf;
+	BootsFactory bf;
+	WeaponFactory wf;
+	OffhandFactory of;
+
+
+	public ItemFactory(GameRandom random, HelmetFactory hf, ChestFactory cf, BootsFactory bf, WeaponFactory wf, OffhandFactory of)
+	{
+		this.random = random;
+		this.hf = hf;
+		this.cf = cf;
+		this.bf = bf;
+		this.wf = wf;
+		this.of = of;
+	}
 	// cC = createCommon, cU = createUncommon
 	//number chance, what "percent" chance it is that item. Note, it checks UP from the bottom
 	//i.e. if cC = 80 (80%), there's only a 20% chance it will even get to cU
 	//if cU is 70% it's only 70% of the 20% a.k.a. 14% chance, so only a 6% chance it gets to cR, so on and so forth
-	public static IEquipment CraftEquipment(int cC, int cU, int cR, int cL, int cUnique)
+	public IEquipment CraftEquipment(int cC, int cU, int cR, int cL, int cUnique)
 	{
-		var rand = new Random();
 		Rarity r;
 
 		//determine rarity
 		//first check if normal, then uncommon, etc.
 		//if "
-		if (RandomNumber(0, 101) < cC)
+		if (random.Random.Next(0, 101) < cC)
 		{
 			r = Rarity.Common;
 		}
-		else if (RandomNumber(0, 101) < cU)
+		else if (random.Random.Next(0, 101) < cU)
 		{
 			r = Rarity.Uncommon;
 		}
-		else if (RandomNumber(0, 101) < cR)
+		else if (random.Random.Next(0, 101) < cR)
 		{
 			r = Rarity.Rare;
 		}
-		else if (RandomNumber(0, 101) < cL)
+		else if (random.Random.Next(0, 101) < cL)
 		{
 			r = Rarity.Legendary;
 		}
-		else if (RandomNumber(0, 101) < cUnique)
+		else if (random.Random.Next(0, 101) < cUnique)
 		{
 			r = Rarity.Unique;
 		}
@@ -43,22 +59,22 @@ public static class ItemFactory
 		}
 
 		//determine the piece of equipment and call that specific factory
-		int random = rand.Next(0, 5);
-		return random switch
+		int randomNumber = random.Random.Next(0, 5);
+		return randomNumber switch
 		{
-			0 => HelmetFactory.CraftHelmet(r),
-			1 => ChestFactory.CraftChest(r),
-			2 => BootsFactory.CraftBoots(r),
-			3 => WeaponFactory.CraftWeapon(r),
-			4 => OffhandFactory.CraftOffhand(r),
-			_ => HelmetFactory.CraftHelmet(r),
+			0 => hf.CraftHelmet(r),
+			1 => cf.CraftChest(r),
+			2 => bf.CraftBoots(r),
+			3 => wf.CraftWeapon(r),
+			4 => of.CraftOffhand(r),
+			_ => hf.CraftHelmet(r),
 		};
 	}
 
 	//"Basic" is used as there are two crafting methods:
 	//Basic Crafting returns normal,uncommon, or rare.
 	//Nonbasic can return Legendary and Unique as well.
-	public static IEquipment CraftItem(bool weapon, bool basic, bool phys)
+	public IEquipment CraftItem(bool weapon, bool basic, bool phys)
 	{
 		if (weapon)
 		{
@@ -91,44 +107,36 @@ public static class ItemFactory
 		}
 	}
 
-	public static Gear CraftGear(bool basic)
+	public Gear CraftGear(bool basic)
 	{
-		var rand = new Random();
 		Rarity rarity;
-		if (basic) { rarity = (Rarity)rand.Next(0, 2); }
-		else { rarity = (Rarity)rand.Next(1, 4); }
+		if (basic) { rarity = (Rarity)random.Random.Next(0, 2); }
+		else { rarity = (Rarity)random.Random.Next(1, 4); }
 
-		int gearType = rand.Next(0, 5);
+		int gearType = random.Random.Next(0, 5);
 		return gearType switch
 		{
-			0 => HelmetFactory.CraftHelmet(rarity),
-			1 => ChestFactory.CraftChest(rarity),
-			2 => BootsFactory.CraftBoots(rarity),
-			3 => OffhandFactory.CraftOffhand(rarity),
-			_ => HelmetFactory.CraftHelmet(rarity),
+			0 => hf.CraftHelmet(rarity),
+			1 => cf.CraftChest(rarity),
+			2 => bf.CraftBoots(rarity),
+			3 => of.CraftOffhand(rarity),
+			_ => hf.CraftHelmet(rarity),
 		};
 	}
 
-	public static Weapon CraftWeapon(bool phys, bool basic)
+	public Weapon CraftWeapon(bool phys, bool basic)
 	{
 		Rarity rarity;
-		var rand = new Random();
-		if (basic) { rarity = (Rarity)rand.Next(0, 3); }
-		else { rarity = (Rarity)rand.Next(2, 5); }
+		if (basic) { rarity = (Rarity)random.Random.Next(0, 3); }
+		else { rarity = (Rarity)random.Random.Next(2, 5); }
 
 		if (phys)
 		{
-			return WeaponFactory.CraftPhysWeapon(rarity);
+			return wf.CraftPhysWeapon(rarity);
 		}
 		else
 		{
-			return WeaponFactory.CraftMagicWeapon(rarity);
+			return wf.CraftMagicWeapon(rarity);
 		}
-	}
-
-	private static int RandomNumber(int start, int end)
-	{
-		var rand = new Random();
-		return rand.Next(start, end);
 	}
 }

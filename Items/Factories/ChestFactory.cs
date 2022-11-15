@@ -2,12 +2,16 @@
 using AFK_Dungeon_Lib.Utility;
 
 namespace AFK_Dungeon_Lib.Items.Factories;
-public static class ChestFactory
+public class ChestFactory
 {
-	public static Chest CraftChest(Rarity r)
+	readonly GameRandom random;
+	public ChestFactory(GameRandom random)
+	{
+		this.random = random;
+	}
+	public Chest CraftChest(Rarity r)
 	{
 		Rarity rarity = r;
-		var random = new Random();
 		float baseVit = 10f;
 		float baseDef = 10f;
 		float baseRes = 10f;
@@ -23,7 +27,7 @@ public static class ChestFactory
 		//presently a is favored to be larger, roughly "45" average
 		//meaning the other two split "55" approx evenly
 		int a, b, c, max;
-		a = random.Next(10, 80);
+		a = random.Random.Next(10, 80);
 		if (a == 80)
 		{
 			b = 10;
@@ -32,12 +36,12 @@ public static class ChestFactory
 		else
 		{
 			max = 90 - a;
-			b = random.Next(10, max + 1);
+			b = random.Random.Next(10, max + 1);
 			c = 100 - a - b;
 		}
 
 		//assign them randomly between 0-5 for each shuffle
-		int assignment = random.Next(0, 6);
+		int assignment = random.Random.Next(0, 6);
 		int def, res, vit;
 		switch (assignment)
 		{
@@ -75,7 +79,7 @@ public static class ChestFactory
 		if (rarity == Rarity.Rare)
 		{
 			//figure out second stat if Rare
-			float x = random.Next(0, 2);
+			float x = random.Random.Next(0, 2);
 			if (x == 0)
 			{
 				stats.Add(new EquipmentStat(EquipmentMod.Defense, baseDef));

@@ -1,3 +1,5 @@
+using AFK_Dungeon_Lib.AI;
+
 namespace AFK_Dungeon_Lib.Pawns.Enemies;
 
 public class Enemy : IPawn
@@ -6,20 +8,21 @@ public class Enemy : IPawn
 	public int Level { get; private set; }
 	public EnemyStat Stats;
 	public Coordinate Position { get; private set; }
+	public TargetPriority Priority { get; set; }
 	public bool PhysicalDamage;
 	public bool RangedWeapon;
 	public bool AlternateDamage;
 
-	public Enemy(string name, int level, bool phys, bool range, bool alternateDmg, Coordinate pos) :
-		this(name, level, phys, range, alternateDmg, pos, 10, 0.1f, 0.5f, 1.0f, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10)
+	public Enemy(string name, int level, bool phys, bool range, bool alternateDmg, Coordinate pos, TargetPriority priority) :
+		this(name, level, phys, range, alternateDmg, pos, 10, 0.1f, 0.5f, 1.0f, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10, priority)
 	{
 	}
-	public Enemy() : this("Basic Enemy", 1, true, false, false, new(0, 0)) { }
+	public Enemy() : this("Basic Enemy", 1, true, false, false, new(0, 0), TargetPriority.Closest) { }
 
 	public Enemy(string name, int level, bool phys, bool range, bool alternateDmg, Coordinate pos,
 				int baseDamage, float baseCritChance, float baseCritDamage, float attackSpeed,
 				int baseHealth, int baseDefense, int baseResist,
-				int strength, int dexterity, int vitality, int intelligence, int wisdom, int fortitude, int will)
+				int strength, int dexterity, int vitality, int intelligence, int wisdom, int fortitude, int will, TargetPriority priority)
 	{
 		this.Name = name;
 		this.Level = level;
@@ -45,6 +48,8 @@ public class Enemy : IPawn
 		EnemyCalculator.InitializeEnemy(this);
 		EnemyCalculator.CalcStats(this);
 		EnemyCalculator.ResetCurrent(this);
+		Priority = priority;
+
 	}
 
 	public void IncrementLevel(int level)

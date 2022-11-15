@@ -2,6 +2,7 @@ using AFK_Dungeon_Lib.Items;
 using AFK_Dungeon_Lib.Items.Equipment;
 using AFK_Dungeon_Lib.Items.Equipment.Weapon;
 using AFK_Dungeon_Lib.Items.Equipment.Offhand;
+using AFK_Dungeon_Lib.AI;
 
 namespace AFK_Dungeon_Lib.Pawns.Hero;
 
@@ -14,6 +15,7 @@ public class Hero : IPawn
 	public long ExpToLevel { get; set; }
 	public int AvailableAbilityPoints { get; private set; }
 	public Coordinate Position { get; private set; }
+	public TargetPriority Priority { get; set; }
 
 	public IEquipment? EquippedHelmet;
 	public IEquipment? EquippedChest;
@@ -26,19 +28,28 @@ public class Hero : IPawn
 	public bool AlternateDmg { get; set; }
 	public bool DualWielding { get; set; }
 
-	public Hero(string name)
+	public Hero(string name, int level, int currentExp, int availableAbilityPoints, Coordinate position, HeroStat stats, Helmet? helmet, Chest? chest, Boots? boots, Weapon? mainHand, IEquipment? offHand)
 	{
 		Name = name;
-		Level = 1;
-		CurrentExp = 0;
-		ExpToLevel = HeroCalculator.CalcExpToNextLevel(1);
-		AvailableAbilityPoints = 3;
-		Position = new(0, 0);
-		Stats = new();
+		Level = level;
+		CurrentExp = currentExp;
+		ExpToLevel = HeroCalculator.CalcExpToNextLevel(Level);
+		AvailableAbilityPoints = availableAbilityPoints;
+		Position = position;
+		Stats = stats;
+
+		//equip things if they should be equipped
+		if (helmet != null) { EquippedHelmet = helmet; }
+		if (chest != null) { EquippedChest = chest; }
+		if (boots != null) { EquippedBoots = boots; }
+		if (mainHand != null) { EquippedMainHand = mainHand; }
+		if (offHand != null) { EquippedOffhand = offHand; }
 
 		InitializeAbilityScores();
 		HeroCalculator.CalcStats(this);
+
 	}
+	public Hero(string name) : this(name, 1, 0, 3, new(0, 0), new(), null, null, null, null, null) { }
 	public Hero() : this("New Hero") { }
 
 	private void InitializeAbilityScores()

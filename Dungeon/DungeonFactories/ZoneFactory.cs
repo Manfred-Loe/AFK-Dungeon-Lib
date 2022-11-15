@@ -1,9 +1,16 @@
 using AFK_Dungeon_Lib.Dungeon.DungeonComponents;
+using AFK_Dungeon_Lib.IOC;
 
 namespace AFK_Dungeon_Lib.Dungeon.DungeonFactories;
-public static class ZoneFactory
+public class ZoneFactory
 {
-	public static Zone GenerateZone(int scale, int zoneLevel)
+	public readonly int scale;
+	public ZoneFactory(GameConfig gc)
+	{
+		this.scale = gc.ZoneScaling;
+	}
+
+	public Zone GenerateZone(int zoneLevel)
 	{
 		var floors = new List<Floor>();
 

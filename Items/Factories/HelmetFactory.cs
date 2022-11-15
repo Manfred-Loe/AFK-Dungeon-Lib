@@ -3,12 +3,17 @@ using AFK_Dungeon_Lib.Utility;
 
 namespace AFK_Dungeon_Lib.Items.Factories;
 
-public static class HelmetFactory
+public class HelmetFactory
 {
-	public static Helmet CraftHelmet(Rarity r)
+	readonly GameRandom random;
+	public HelmetFactory(GameRandom random)
+	{
+		this.random = random;
+	}
+
+	public Helmet CraftHelmet(Rarity r)
 	{
 		var rarity = r;
-		var random = new Random();
 		float base1 = 10f, base2 = 10f, base3 = 10f;
 		List<EquipmentMod> listStats = new();
 
@@ -22,7 +27,7 @@ public static class HelmetFactory
 		//presently a is favored to be larger, roughly "45" average
 		//meaning the other two split "55" approx evenly
 		int a, b, c, max;
-		a = random.Next(10, 80);
+		a = random.Random.Next(10, 80);
 		if (a == 80)
 		{
 			b = 10;
@@ -31,12 +36,12 @@ public static class HelmetFactory
 		else
 		{
 			max = 90 - a;
-			b = random.Next(10, max + 1);
+			b = random.Random.Next(10, max + 1);
 			c = 100 - a - b;
 		}
 		//assign them randomly between 0-5 for each shuffle
 		int stat1, stat2, stat3;
-		int assignment = random.Next(0, 6);
+		int assignment = random.Random.Next(0, 6);
 		switch (assignment)
 		{
 			case 0: stat1 = a; stat2 = b; stat3 = c; break;
@@ -57,7 +62,7 @@ public static class HelmetFactory
             Res (Res Primary)
          */
 
-		int helmetType = random.Next(0, 6);
+		int helmetType = random.Random.Next(0, 6);
 
 		switch (helmetType)
 		{
@@ -124,7 +129,7 @@ public static class HelmetFactory
 		if (rarity == Rarity.Rare)
 		{
 			//figure out second stat if Rare
-			index = random.Next(0, listStats.Count);
+			index = random.Random.Next(0, listStats.Count);
 			stats.Add(new EquipmentStat(listStats[index], base2));
 		}
 		else if (rarity == Rarity.Legendary || rarity == Rarity.Unique)
@@ -138,7 +143,7 @@ public static class HelmetFactory
 		return helmet;
 	}
 
-	private static EquipmentMod NewRandomStat(List<EquipmentMod> list)
+	private EquipmentMod NewRandomStat(List<EquipmentMod> list)
 	{
 		EquipmentMod newStat = RandomStatEnum();
 		for (int i = 0; i < list.Count; i++)
@@ -155,9 +160,8 @@ public static class HelmetFactory
 		}
 		return newStat;
 	}
-	private static EquipmentMod RandomStatEnum()
+	private EquipmentMod RandomStatEnum()
 	{
-		var random = new Random();
-		return (EquipmentMod)random.Next(0, 9);
+		return (EquipmentMod)random.Random.Next(0, 9);
 	}
 }

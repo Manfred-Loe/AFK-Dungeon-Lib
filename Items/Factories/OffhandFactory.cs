@@ -3,12 +3,17 @@ using AFK_Dungeon_Lib.Items.Equipment.Offhand;
 using AFK_Dungeon_Lib.Utility;
 
 namespace AFK_Dungeon_Lib.Items.Factories;
-public static class OffhandFactory
+public class OffhandFactory
 {
-	public static Offhand CraftOffhand(Rarity r)
+	readonly GameRandom random;
+
+	public OffhandFactory(GameRandom random)
+	{
+		this.random = random;
+	}
+	public Offhand CraftOffhand(Rarity r)
 	{
 		Rarity rarity = r;
-		var rand = new Random();
 		float base1 = 10f;
 		float base2 = 10f;
 		float base3 = 10f;
@@ -29,7 +34,7 @@ public static class OffhandFactory
 		//presently a is favored to be larger, roughly "45" average
 		//meaning the other two split "55" approx evenly
 		int a, b, c, max;
-		a = rand.Next(10, 80);
+		a = random.Random.Next(10, 80);
 		if (a == 80)
 		{
 			b = 10;
@@ -38,12 +43,12 @@ public static class OffhandFactory
 		else
 		{
 			max = 90 - a;
-			b = rand.Next(10, max + 1);
+			b = random.Random.Next(10, max + 1);
 			c = 100 - a - b;
 		}
 		//assign them randomly between 0-5 for each shuffle
 		int stat1, stat2, stat3;
-		int assignment = rand.Next(0, 6);
+		int assignment = random.Random.Next(0, 6);
 		switch (assignment)
 		{
 			case 0: stat1 = a; stat2 = b; stat3 = c; break;
@@ -57,7 +62,7 @@ public static class OffhandFactory
 
 		//determine type of item
 		//first determine if Tome or Shield
-		if (rand.Next(0, 2) == 0)
+		if (random.Random.Next(0, 2) == 0)
 		{
 			itemName = "Shield";
 			offhandClass = OffhandClass.Shield;
@@ -71,8 +76,8 @@ public static class OffhandFactory
 		{
 			itemName = "Tome";
 			offhandClass = OffhandClass.Tome;
-			spellMod = (SpellModifier)rand.Next(0, 4);
-			listStats = PickTomeMods(rand.Next(0, 2));
+			spellMod = (SpellModifier)random.Random.Next(0, 4);
+			listStats = PickTomeMods(random.Random.Next(0, 2));
 			twoHandEquip = true;
 		}
 
@@ -94,13 +99,13 @@ public static class OffhandFactory
 		}
 
 		List<EquipmentStat> stats = new();
-		int index = rand.Next(0, listStats.Count);
+		int index = random.Random.Next(0, listStats.Count);
 		stats.Add(new EquipmentStat(listStats[index], base1));
 		listStats.RemoveAt(index);
 		if (rarity == Rarity.Rare)
 		{
 			//figure out second stat if Rare
-			index = rand.Next(0, listStats.Count);
+			index = random.Random.Next(0, listStats.Count);
 			stats.Add(new EquipmentStat(listStats[index], base2));
 		}
 		else if (rarity == Rarity.Legendary || rarity == Rarity.Unique)
