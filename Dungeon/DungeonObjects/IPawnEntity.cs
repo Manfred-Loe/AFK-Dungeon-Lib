@@ -6,8 +6,8 @@ public interface IPawnEntity
 	public Coordinate Position { get; set; }
 	public IPawn Entity { get; set; }
 	public EntityState EntityState { get; set; }
-	public IPawn? Target { get; set; }
+	public Coordinate Target { get; set; }
 	public void NextStep();
-	public void GetTarget(List<IPawn> targets);
+	public void GetTarget();
 	public delegate EntityState StateHasChanged();
 }

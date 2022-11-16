@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.ComTypes;
 using AFK_Dungeon_Lib.Dungeon;
 using AFK_Dungeon_Lib.Dungeon.DungeonObjects;
 using AFK_Dungeon_Lib.Pawns.Hero;
@@ -12,7 +11,7 @@ namespace AFK_Dungeon_Lib.AI;
 internal static class Targeter
 
 {
-	public static Coordinate GetTarget(IPawnEntity self, List<IPawnEntity> targets, DungeonRandom rand)
+	public static Coordinate GetTarget(IPawnEntity self, IEnumerable<IPawnEntity> targets, DungeonRandom rand)
 	{
 		Random random = rand.Random;
 		TargetPriority priority = TargetPriority.Closest;
@@ -51,7 +50,191 @@ internal static class Targeter
 			_ => GetClosest(self, targets, random)
 		};
 	}
-	public static Coordinate GetMageTarget(IPawnEntity self, List<IPawnEntity> targets, Random random)
+	public static Coordinate GetClosest(IPawnEntity self, IEnumerable<IPawnEntity> targets, Random random)
+	{
+		Coordinate myPosition = self.Position;
+		int distance = 100;
+		var validTargets = new List<IPawnEntity>();
+		foreach (var target in targets)
+		{
+			int tempDistance = MathFunc.Distance(myPosition, target.Position);
+			if (tempDistance < distance)
+			{
+				distance = tempDistance;
+				validTargets.Clear();
+				validTargets.Add(target);
+			}
+			else if (tempDistance == distance)
+			{
+				validTargets.Add(target);
+			}
+		}
+		return validTargets[random.Next(validTargets.Count)].Entity.Position;
+	}
+	public static Coordinate GetFurthest(IPawnEntity self, IEnumerable<IPawnEntity> targets, Random random)
+	{
+		Coordinate myPosition = self.Position;
+		int distance = 0;
+		var validTargets = new List<IPawnEntity>();
+		foreach (var target in targets)
+		{
+			int tempDistance = MathFunc.Distance(myPosition, target.Position);
+			if (tempDistance > distance)
+			{
+				distance = tempDistance;
+				validTargets.Clear();
+				validTargets.Add(target);
+			}
+			else if (tempDistance == distance)
+			{
+				validTargets.Add(target);
+			}
+		}
+		return validTargets[random.Next(validTargets.Count)].Entity.Position;
+	}
+	public static Coordinate GetFrontline(IPawnEntity self, IEnumerable<IPawnEntity> targets, Random random)
+	{
+		int xFrontline;
+		var validTargets = new List<IPawnEntity>();
+		if (self is Hero)
+		{
+			xFrontline = 2;
+		}
+		else
+		{
+			xFrontline = 1;
+		}
+
+		foreach (var target in targets)
+		{
+			if (target.Position.X == xFrontline)
+			{
+				validTargets.Add(target);
+			}
+		}
+		if (validTargets.Count == 0)
+		{
+			return GetClosest(self, targets, random);
+		}
+		else
+		{
+			return GetClosest(self, validTargets, random);
+		}
+	}
+	public static Coordinate GetBackline(IPawnEntity self, IEnumerable<IPawnEntity> targets, Random random)
+	{
+		int xBackline;
+		var validTargets = new List<IPawnEntity>();
+		if (self is Hero)
+		{
+			xBackline = 3;
+		}
+		else
+		{
+			xBackline = 0;
+		}
+
+		foreach (var target in targets)
+		{
+			if (target.Position.X == xBackline)
+			{
+				validTargets.Add(target);
+			}
+		}
+		if (validTargets.Count == 0)
+		{
+			return GetClosest(self, targets, random);
+		}
+		else
+		{
+			return GetClosest(self, validTargets, random);
+		}
+	}
+	public static Coordinate GetWeakest(IEnumerable<IPawnEntity> targets, Random random)
+	{
+		int health = -1;
+		var validTargets = new List<IPawnEntity>();
+		foreach (var target in targets)
+		{
+			if (target is Enemy e)
+			{
+				if (e.Stats.Health.Current < health)
+				{
+					validTargets.Clear();
+					validTargets.Add(target);
+					health = e.Stats.Health.Current;
+				}
+				else if (e.Stats.Health.Current == health)
+				{
+					validTargets.Add(target);
+				}
+				else if (health < 0)
+				{
+					validTargets.Add(target);
+					health = e.Stats.Health.Current;
+				}
+			}
+			else if (target is Hero h)
+			{
+				if (h.Stats.Health.Current < health)
+				{
+					validTargets.Clear();
+					validTargets.Add(target);
+					health = h.Stats.Health.Current;
+				}
+				else if (h.Stats.Health.Current == health)
+				{
+					validTargets.Add(target);
+				}
+				else if (health < 0)
+				{
+					validTargets.Add(target);
+					health = h.Stats.Health.Current;
+				}
+			}
+		}
+		return validTargets[random.Next(validTargets.Count)].Entity.Position;
+	}
+	public static Coordinate GetSrongest(IEnumerable<IPawnEntity> targets, Random random)
+	{
+		int health = -1;
+		var validTargets = new List<IPawnEntity>();
+		foreach (var target in targets)
+		{
+			if (targets is Enemy e)
+			{
+				if (e.Stats.Health.Current > health)
+				{
+					validTargets.Clear();
+					validTargets.Add(target);
+					health = e.Stats.Health.Current;
+				}
+				else if (e.Stats.Health.Current == health)
+				{
+					validTargets.Add(target);
+				}
+			}
+			else if (targets is Hero h)
+			{
+				if (h.Stats.Health.Current > health)
+				{
+					validTargets.Clear();
+					validTargets.Add(target);
+					health = h.Stats.Health.Current;
+				}
+				else if (h.Stats.Health.Current == health)
+				{
+					validTargets.Add(target);
+				}
+			}
+		}
+		return validTargets[random.Next(validTargets.Count)].Entity.Position;
+	}
+	//mage has to check if there's a spell modifier
+	//if there isn't or it's "point" it returns closest
+	//if there is it runs those targeting systems. NOTE: Target coordinates returned may NOT have a target in them.
+	//i.e. CUBE will return the TOP LEFT of the cube, line will return the y=0 coordinate of the line
+	public static Coordinate GetMageTarget(IPawnEntity self, IEnumerable<IPawnEntity> targets, Random random)
 	{
 		SpellModifier modifier = SpellModifier.None;
 
@@ -76,20 +259,57 @@ internal static class Targeter
 			_ => GetClosest(self, targets, random),
 		};
 	}
+	public static Coordinate GetLineTarget(IEnumerable<IPawnEntity> targets)
+	{
+		int countFrontline = 0;
+		int countBackline = 0;
+		Coordinate frontline;
+		Coordinate backline;
 
+		if (targets.ElementAt(0) is EnemyEntity)
+		{
+			frontline = new(2, 0);
+			backline = new(3, 0);
+		}
+		else
+		{
+			frontline = new(1, 0);
+			backline = new(0, 0);
+		}
+
+		foreach (var target in targets)
+		{
+			if (target.Position.X == 1 || target.Position.X == 2)
+			{
+				countFrontline++;
+			}
+			else
+			{
+				countBackline++;
+			}
+		}
+		if (countFrontline >= countBackline)
+		{
+			return frontline;
+		}
+		else
+		{
+			return backline;
+		}
+	}
 	//complicated - prioritizes highest in square area
 	// if tied among square areas, targets the one with the most in the front line
 	// if the front line is the same, randomly assign it.
-	public static Coordinate GetCubeTarget(List<IPawnEntity> targets, Random random)
+	public static Coordinate GetCubeTarget(IEnumerable<IPawnEntity> targets, Random random)
 	{
 		var validTargets = new List<Coordinate>();
 		Coordinate top, middle, bottom;
 		var row = new int[4] { 0, 0, 0, 0 };
 		var column = new int[4] { 0, 0, 0, 0 };
 		var squareFrontline = new int[3] { 0, 0, 0 };
-		for (int i = 0; i < targets.Count; i++)
+		foreach (var target in targets)
 		{
-			switch (targets[i].Position.Y)
+			switch (target.Position.Y)
 			{
 				case 0: row[0]++; break;
 				case 1: row[1]++; break;
@@ -97,11 +317,11 @@ internal static class Targeter
 				case 3: row[3]++; break;
 				default: break;
 			}
-			switch (targets[i].Position.X)
+			switch (target.Position.X)
 			{
 				case 0:
 					column[0]++;
-					switch (targets[i].Position.Y)
+					switch (target.Position.Y)
 					{
 						case 0: squareFrontline[0]++; break;
 						case 1: squareFrontline[0]++; squareFrontline[1]++; break;
@@ -112,7 +332,7 @@ internal static class Targeter
 					break;
 				case 1:
 					column[1]++;
-					switch (targets[i].Position.Y)
+					switch (target.Position.Y)
 					{
 						case 0: squareFrontline[0]++; break;
 						case 1: squareFrontline[0]++; squareFrontline[1]++; break;
@@ -123,7 +343,7 @@ internal static class Targeter
 					break;
 				case 2:
 					column[2]++;
-					switch (targets[i].Position.Y)
+					switch (target.Position.Y)
 					{
 						case 0: squareFrontline[0]++; break;
 						case 1: squareFrontline[0]++; squareFrontline[1]++; break;
@@ -134,7 +354,7 @@ internal static class Targeter
 					break;
 				case 3:
 					column[3]++;
-					switch (targets[i].Position.Y)
+					switch (target.Position.Y)
 					{
 						case 0: squareFrontline[0]++; break;
 						case 1: squareFrontline[0]++; squareFrontline[1]++; break;
@@ -211,207 +431,5 @@ internal static class Targeter
 			}
 		}
 		return validTargets[random.Next(validTargets.Count)];
-	}
-	public static Coordinate GetLineTarget(List<IPawnEntity> targets)
-	{
-		int countFrontline = 0;
-		int countBackline = 0;
-		for (int i = 0; i < targets.Count; i++)
-		{
-			if (targets[i].Position.X == 1 || targets[i].Position.X == 2)
-			{
-				countFrontline++;
-			}
-			else
-			{
-				countBackline++;
-			}
-		}
-		if (countFrontline >= countBackline)
-		{
-			return targets.Find(x => x.Position.X == 1 || x.Position.X == 2)!.Entity.Position;
-		}
-		else
-		{
-			return targets.Find(x => x.Position.X == 0 || x.Position.X == 3)!.Entity.Position;
-		}
-	}
-	public static Coordinate GetClosest(IPawnEntity self, List<IPawnEntity> targets, Random random)
-	{
-		Coordinate myPosition = self.Position;
-		int distance = 100;
-		var validTargets = new List<IPawnEntity>();
-		for (int i = 0; i < targets.Count; i++)
-		{
-			int tempDistance = MathFunc.Distance(myPosition, targets[i].Position);
-			if (tempDistance < distance)
-			{
-				distance = tempDistance;
-				validTargets.Clear();
-				validTargets.Add(targets[i]);
-			}
-			else if (tempDistance == distance)
-			{
-				validTargets.Add(targets[i]);
-			}
-		}
-		return validTargets[random.Next(validTargets.Count)].Entity.Position;
-	}
-	public static Coordinate GetFurthest(IPawnEntity self, List<IPawnEntity> targets, Random random)
-	{
-		Coordinate myPosition = self.Position;
-		int distance = 0;
-		var validTargets = new List<IPawnEntity>();
-		for (int i = 0; i < targets.Count; i++)
-		{
-			int tempDistance = MathFunc.Distance(myPosition, targets[i].Position);
-			if (tempDistance > distance)
-			{
-				distance = tempDistance;
-				validTargets.Clear();
-				validTargets.Add(targets[i]);
-			}
-			else if (tempDistance == distance)
-			{
-				validTargets.Add(targets[i]);
-			}
-		}
-		return validTargets[random.Next(validTargets.Count)].Entity.Position;
-	}
-	public static Coordinate GetFrontline(IPawnEntity self, List<IPawnEntity> targets, Random random)
-	{
-		int xFrontline;
-		var validTargets = new List<IPawnEntity>();
-		if (self is Hero)
-		{
-			xFrontline = 2;
-		}
-		else
-		{
-			xFrontline = 1;
-		}
-
-		for (int i = 0; i < targets.Count; i++)
-		{
-			if (targets[i].Position.X == xFrontline)
-			{
-				validTargets.Add(targets[i]);
-			}
-		}
-		if (validTargets.Count == 0)
-		{
-			return GetClosest(self, targets, random);
-		}
-		else
-		{
-			return GetClosest(self, validTargets, random);
-		}
-	}
-	public static Coordinate GetBackline(IPawnEntity self, List<IPawnEntity> targets, Random random)
-	{
-		int xBackline;
-		var validTargets = new List<IPawnEntity>();
-		if (self is Hero)
-		{
-			xBackline = 3;
-		}
-		else
-		{
-			xBackline = 0;
-		}
-
-		for (int i = 0; i < targets.Count; i++)
-		{
-			if (targets[i].Position.X == xBackline)
-			{
-				validTargets.Add(targets[i]);
-			}
-		}
-		if (validTargets.Count == 0)
-		{
-			return GetClosest(self, targets, random);
-		}
-		else
-		{
-			return GetClosest(self, validTargets, random);
-		}
-	}
-	public static Coordinate GetWeakest(List<IPawnEntity> targets, Random random)
-	{
-		int health = -1;
-		var validTargets = new List<IPawnEntity>();
-		for (int i = 0; i < targets.Count; i++)
-		{
-			if (targets[i] is Enemy e)
-			{
-				if (e.Stats.Health.Current < health)
-				{
-					validTargets.Clear();
-					validTargets.Add(targets[i]);
-					health = e.Stats.Health.Current;
-				}
-				else if (e.Stats.Health.Current == health)
-				{
-					validTargets.Add(targets[i]);
-				}
-				else if (health < 0)
-				{
-					validTargets.Add(targets[i]);
-					health = e.Stats.Health.Current;
-				}
-			}
-			else if (targets[i] is Hero h)
-			{
-				if (h.Stats.Health.Current < health)
-				{
-					validTargets.Add(targets[i]);
-					health = h.Stats.Health.Current;
-				}
-				else if (h.Stats.Health.Current == health)
-				{
-					validTargets.Add(targets[i]);
-				}
-				else if (health < 0)
-				{
-					validTargets.Add(targets[i]);
-					health = h.Stats.Health.Current;
-				}
-			}
-		}
-		return validTargets[random.Next(validTargets.Count)].Entity.Position;
-	}
-	public static Coordinate GetSrongest(List<IPawnEntity> targets, Random random)
-	{
-		int health = -1;
-		var validTargets = new List<IPawnEntity>();
-		for (int i = 0; i < targets.Count; i++)
-		{
-			if (targets[i] is Enemy e)
-			{
-				if (e.Stats.Health.Current > health)
-				{
-					validTargets.Clear();
-					validTargets.Add(targets[i]);
-					health = e.Stats.Health.Current;
-				}
-				else if (e.Stats.Health.Current == health)
-				{
-					validTargets.Add(targets[i]);
-				}
-			}
-			else if (targets[i] is Hero h)
-			{
-				if (h.Stats.Health.Current > health)
-				{
-					validTargets.Add(targets[i]);
-					health = h.Stats.Health.Current;
-				}
-				else if (h.Stats.Health.Current == health)
-				{
-					validTargets.Add(targets[i]);
-				}
-			}
-		}
-		return validTargets[random.Next(validTargets.Count)].Entity.Position;
 	}
 }

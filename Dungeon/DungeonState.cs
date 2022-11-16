@@ -22,48 +22,50 @@ internal class DungeonState
 	public List<EnemyEntity> CurrentEnemies;
 	public List<IPawnEntity> CurrentEntities;
 	public DungeonGrid DungeonGrid;
+	readonly public DungeonRandom Random;
 
-	public DungeonState(List<IPawn> heroes, Zone currentZone, Floor currentFloor, Room currentRoom, int totalEnemiesKilledCount, int clearedRoomCount)
+	public DungeonState(List<IPawn> heroes, DungeonRandom random, Zone currentZone, Floor currentFloor, Room currentRoom, int totalEnemiesKilledCount, int clearedRoomCount)
 	{
 		//initialize objects
-		Heroes = new();
-		CurrentEnemies = new();
-		CurrentEntities = new();
-		TotalEnemiesKilledCount = totalEnemiesKilledCount;
-		ClearedRoomCount = clearedRoomCount;
-		CurrentZone = currentZone;
-		CurrentFloor = currentFloor;
-		CurrentRoom = currentRoom;
+		this.Heroes = new();
+		this.CurrentEnemies = new();
+		this.CurrentEntities = new();
+		this.TotalEnemiesKilledCount = totalEnemiesKilledCount;
+		this.ClearedRoomCount = clearedRoomCount;
+		this.CurrentZone = currentZone;
+		this.CurrentFloor = currentFloor;
+		this.CurrentRoom = currentRoom;
+		this.Random = random;
 
 		//fill heroes
 		for (int i = 0; i < heroes.Count; i++)
 		{
 			if (heroes[i] is Hero h)
 			{
-				Heroes.Add(new(h, h.Position));
+				Heroes.Add(new(h, h.Position, this));
 			}
 		}
 		//fill enemies
 		for (int i = 0; i < currentRoom.Enemies.Count; i++)
 		{
-			CurrentEnemies.Add(new(currentRoom.Enemies[i], currentRoom.Enemies[i].Position));
+			CurrentEnemies.Add(new(currentRoom.Enemies[i], currentRoom.Enemies[i].Position, this));
 		}
 
 		if (currentRoom is BossRoom b)
 		{
-			CurrentEnemies.Add(new(b.Boss, b.BossPosition));
+			CurrentEnemies.Add(new(b.Boss, b.BossPosition, this));
 		}
 		if (currentRoom is MiniBossRoom m)
 		{
-			CurrentEnemies.Add(new(m.Miniboss, m.MinibossPosition));
+			CurrentEnemies.Add(new(m.Miniboss, m.MinibossPosition, this));
 		}
 
 		//determine initial turn orders
-		CurrentEntities = DungeonDriver.GetInitialTurnOrder(Heroes, CurrentEnemies);
+		this.CurrentEntities = DungeonDriver.GetInitialTurnOrder(Heroes, CurrentEnemies);
 		//put all entities into the grid
-		DungeonGrid = new(CurrentEntities);
+		this.DungeonGrid = new(CurrentEntities);
 		//set start time
-		TimeStart = DateTime.Now;
+		this.TimeStart = DateTime.Now;
 	}
 
 	public void UpdateEnemies()

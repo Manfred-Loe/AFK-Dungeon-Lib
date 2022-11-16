@@ -2,19 +2,26 @@ using SimpleInjector;
 using AFK_Dungeon_Lib.Dungeon;
 using AFK_Dungeon_Lib.Items.Factories;
 using AFK_Dungeon_Lib.Dungeon.DungeonFactories;
+using AFK_Dungeon_Lib.API;
+using AFK_Dungeon_Lib.Account;
 
 namespace AFK_Dungeon_Lib.IOC;
 
 public class GameContainer
 {
-	readonly Container container;
-	public GameContainer(GameConfig config)
+	readonly public Container container;
+	public GameContainer(UserAccount user, GameConfig config)
 	{
 		//create container
 		container = new();
 
-		//register game configuration
+		//register game configuration and user
+		container.RegisterInstance<UserAccount>(user);
 		container.RegisterInstance<GameConfig>(config);
+
+		//register API
+		container.Register<DungeonAPI>(Lifestyle.Singleton);
+		container.Register<GameAPI>(Lifestyle.Singleton);
 
 		//register randoms
 		container.Register<GameRandom>(Lifestyle.Singleton);

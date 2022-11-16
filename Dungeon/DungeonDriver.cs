@@ -8,11 +8,10 @@ using AFK_Dungeon_Lib.Dungeon.DungeonFactories;
 
 namespace AFK_Dungeon_Lib.Dungeon;
 
-public class DungeonDriver
+internal class DungeonDriver
 {
-
 	readonly DungeonState DungeonState;
-	DungeonRandom random;
+	readonly DungeonRandom random;
 	public DungeonDriver(List<IPawn> heroes, GameConfig gc, ZoneFactory zf, DungeonRandom random)
 	{
 		var dl = new DungeonLoader(gc, zf);
