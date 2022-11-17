@@ -1,0 +1,61 @@
+{
+  "format": 1,
+  "restore": {
+    "/d/Projects/Unity/AFK-Dungeon-Console/AFK_Console/AFK_Console.csproj": {}
+  },
+  "projects": {
+    "/d/Projects/Unity/AFK-Dungeon-Console/AFK_Console/AFK_Console.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/d/Projects/Unity/AFK-Dungeon-Console/AFK_Console/AFK_Console.csproj",
+        "projectName": "AFK_Console",
+        "projectPath": "/d/Projects/Unity/AFK-Dungeon-Console/AFK_Console/AFK_Console.csproj",
+        "packagesPath": "/home/hells/.nuget/packages/",
+        "outputPath": "/d/Projects/Unity/AFK-Dungeon-Console/AFK_Console/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/hells/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
