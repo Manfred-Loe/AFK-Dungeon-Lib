@@ -19,7 +19,7 @@ internal class DungeonDriver
 		var zone = dl.GetCurrentZone();
 		var floor = zone.GetFloorByNumber(gc.CurrentFloor);
 		var room = floor.GetRoomByNumber(gc.CurrentRoom);
-		DungeonState = new(heroes, zone, floor, room, 0, 0);
+		DungeonState = new(heroes, random, zone, floor, room, 0, 0);
 		this.random = random;
 	}
 

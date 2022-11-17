@@ -7,6 +7,7 @@ namespace AFK_Dungeon_Lib.AI
 		Weakest,
 		Furthest,
 		Backline,
-		Frontline
+		Frontline,
+		Most
 	}
 }

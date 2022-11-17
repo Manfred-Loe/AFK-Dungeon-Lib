@@ -14,4 +14,5 @@ public interface IEquipment
 	int GetStatCount();
 	float GetStatValue(int i);
 	List<float> GetAllStatValues();
+	void LevelUp();
 }

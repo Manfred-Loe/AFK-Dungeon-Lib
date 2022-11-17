@@ -47,7 +47,6 @@ public class Hero : IPawn
 
 		InitializeAbilityScores();
 		HeroCalculator.CalcStats(this);
-
 	}
 	public Hero(string name) : this(name, 1, 0, 3, new(0, 0), new(), null, null, null, null, null) { }
 	public Hero() : this("New Hero") { }

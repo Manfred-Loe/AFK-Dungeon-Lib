@@ -58,13 +58,13 @@ internal static class Targeter
 		foreach (var target in targets)
 		{
 			int tempDistance = MathFunc.Distance(myPosition, target.Position);
-			if (tempDistance < distance)
+			if (tempDistance < distance && target.EntityState != EntityState.Untargetable)
 			{
 				distance = tempDistance;
 				validTargets.Clear();
 				validTargets.Add(target);
 			}
-			else if (tempDistance == distance)
+			else if (tempDistance == distance && target.EntityState != EntityState.Untargetable)
 			{
 				validTargets.Add(target);
 			}
@@ -79,13 +79,13 @@ internal static class Targeter
 		foreach (var target in targets)
 		{
 			int tempDistance = MathFunc.Distance(myPosition, target.Position);
-			if (tempDistance > distance)
+			if (tempDistance > distance && target.EntityState != EntityState.Untargetable)
 			{
 				distance = tempDistance;
 				validTargets.Clear();
 				validTargets.Add(target);
 			}
-			else if (tempDistance == distance)
+			else if (tempDistance == distance && target.EntityState != EntityState.Untargetable)
 			{
 				validTargets.Add(target);
 			}
@@ -107,7 +107,7 @@ internal static class Targeter
 
 		foreach (var target in targets)
 		{
-			if (target.Position.X == xFrontline)
+			if (target.Position.X == xFrontline && target.EntityState != EntityState.Untargetable)
 			{
 				validTargets.Add(target);
 			}
@@ -136,7 +136,7 @@ internal static class Targeter
 
 		foreach (var target in targets)
 		{
-			if (target.Position.X == xBackline)
+			if (target.Position.X == xBackline && target.EntityState != EntityState.Untargetable)
 			{
 				validTargets.Add(target);
 			}
@@ -158,17 +158,17 @@ internal static class Targeter
 		{
 			if (target is Enemy e)
 			{
-				if (e.Stats.Health.Current < health)
+				if (e.Stats.Health.Current < health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Clear();
 					validTargets.Add(target);
 					health = e.Stats.Health.Current;
 				}
-				else if (e.Stats.Health.Current == health)
+				else if (e.Stats.Health.Current == health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Add(target);
 				}
-				else if (health < 0)
+				else if (health < 0 && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Add(target);
 					health = e.Stats.Health.Current;
@@ -176,17 +176,17 @@ internal static class Targeter
 			}
 			else if (target is Hero h)
 			{
-				if (h.Stats.Health.Current < health)
+				if (h.Stats.Health.Current < health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Clear();
 					validTargets.Add(target);
 					health = h.Stats.Health.Current;
 				}
-				else if (h.Stats.Health.Current == health)
+				else if (h.Stats.Health.Current == health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Add(target);
 				}
-				else if (health < 0)
+				else if (health < 0 && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Add(target);
 					health = h.Stats.Health.Current;
@@ -203,26 +203,26 @@ internal static class Targeter
 		{
 			if (targets is Enemy e)
 			{
-				if (e.Stats.Health.Current > health)
+				if (e.Stats.Health.Current > health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Clear();
 					validTargets.Add(target);
 					health = e.Stats.Health.Current;
 				}
-				else if (e.Stats.Health.Current == health)
+				else if (e.Stats.Health.Current == health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Add(target);
 				}
 			}
 			else if (targets is Hero h)
 			{
-				if (h.Stats.Health.Current > health)
+				if (h.Stats.Health.Current > health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Clear();
 					validTargets.Add(target);
 					health = h.Stats.Health.Current;
 				}
-				else if (h.Stats.Health.Current == health)
+				else if (h.Stats.Health.Current == health && target.EntityState != EntityState.Untargetable)
 				{
 					validTargets.Add(target);
 				}

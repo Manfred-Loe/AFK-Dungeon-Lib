@@ -21,6 +21,10 @@ public class DungeonGrid
 		}
 	}
 
+	public IPawnEntity? GetEntityAt(Coordinate c)
+	{
+		return Grid[c.X, c.Y];
+	}
 	public void RemoveEntityAt(Coordinate c)
 	{
 		if (Grid[c.X, c.Y] != null)

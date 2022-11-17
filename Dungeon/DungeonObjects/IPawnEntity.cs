@@ -9,5 +9,5 @@ public interface IPawnEntity
 	public Coordinate Target { get; set; }
 	public void NextStep();
 	public void GetTarget();
-	public delegate EntityState StateHasChanged();
+	public void ApplyDamage(int damage, bool phys);
 }

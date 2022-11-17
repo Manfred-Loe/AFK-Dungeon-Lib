@@ -5,13 +5,12 @@ using AFK_Dungeon_Lib.Items.Factories;
 namespace AFK_Dungeon_Lib.Items.Factories;
 public class ItemFactory
 {
-	GameRandom random;
-	HelmetFactory hf;
-	ChestFactory cf;
-	BootsFactory bf;
-	WeaponFactory wf;
-	OffhandFactory of;
-
+	readonly GameRandom random;
+	readonly HelmetFactory hf;
+	readonly ChestFactory cf;
+	readonly BootsFactory bf;
+	readonly WeaponFactory wf;
+	readonly OffhandFactory of;
 
 	public ItemFactory(GameRandom random, HelmetFactory hf, ChestFactory cf, BootsFactory bf, WeaponFactory wf, OffhandFactory of)
 	{

@@ -87,6 +87,23 @@ public class Weapon : IEquipment
 		foreach (var x in ItemStats) { list.Add(x.StatValue); }
 		return list;
 	}
+	public void LevelUp()
+	{
+		if (Level < 10)
+		{
+			foreach (var stat in ItemStats)
+			{
+				if (stat.StatType != EquipmentMod.AttackSpeed)
+				{
+					stat.StatValue = MathFunc.Round(stat.StatValue * 1.5f, 2);
+				}
+				else
+				{
+					stat.StatValue = MathFunc.Round(stat.StatValue * 1.05f, 2);
+				}
+			}
+		}
+	}
 
 	public string DisplayString()
 	{

@@ -1,4 +1,5 @@
 using AFK_Dungeon_Lib.AI;
+using AFK_Dungeon_Lib.Items.Equipment.Offhand;
 
 namespace AFK_Dungeon_Lib.Pawns.Enemies;
 
@@ -9,20 +10,22 @@ public class Enemy : IPawn
 	public EnemyStat Stats;
 	public Coordinate Position { get; private set; }
 	public TargetPriority Priority { get; set; }
+	public SpellModifier Modifier { get; set; }
 	public bool PhysicalDamage;
 	public bool RangedWeapon;
 	public bool AlternateDamage;
+	public bool Healer;
 
-	public Enemy(string name, int level, bool phys, bool range, bool alternateDmg, Coordinate pos, TargetPriority priority) :
-		this(name, level, phys, range, alternateDmg, pos, 10, 0.1f, 0.5f, 1.0f, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10, priority)
+	public Enemy(string name, int level, bool phys, bool range, bool alternateDmg, Coordinate pos, TargetPriority priority, bool healer, SpellModifier modifier) :
+		this(name, level, phys, range, alternateDmg, pos, 10, 0.1f, 0.5f, 1.0f, 30, 10, 10, 10, 10, 10, 10, 10, 10, 10, priority, healer, modifier)
 	{
 	}
-	public Enemy() : this("Basic Enemy", 1, true, false, false, new(0, 0), TargetPriority.Closest) { }
+	public Enemy() : this("Basic Enemy", 1, true, false, false, new(0, 0), TargetPriority.Closest, false, SpellModifier.None) { }
 
 	public Enemy(string name, int level, bool phys, bool range, bool alternateDmg, Coordinate pos,
 				int baseDamage, float baseCritChance, float baseCritDamage, float attackSpeed,
 				int baseHealth, int baseDefense, int baseResist,
-				int strength, int dexterity, int vitality, int intelligence, int wisdom, int fortitude, int will, TargetPriority priority)
+				int strength, int dexterity, int vitality, int intelligence, int wisdom, int fortitude, int will, TargetPriority priority, bool healer, SpellModifier modifier)
 	{
 		this.Name = name;
 		this.Level = level;
@@ -49,7 +52,8 @@ public class Enemy : IPawn
 		EnemyCalculator.CalcStats(this);
 		EnemyCalculator.ResetCurrent(this);
 		Priority = priority;
-
+		this.Healer = healer;
+		this.Modifier = modifier;
 	}
 
 	public void IncrementLevel(int level)
