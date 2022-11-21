@@ -19,6 +19,8 @@ public static class HeroCalculator
 		h.Stats.CritDmgMage.Initial = 0.5f;
 		h.Stats.Defense.Initial = h.Stats.Fortitude.Initial * 2;
 		h.Stats.Resistance.Initial = h.Stats.Will.Initial * 2;
+		h.Stats.DamageModifier.Initial = 1f;
+		h.Stats.AttackSpeed.Initial = 1f;
 	}
 
 	//be careful, if State = Initial you can break heroes
@@ -105,7 +107,7 @@ public static class HeroCalculator
 				h.Stats.DamageModifier.Bonus = w.DamageModifier;
 				if (!h.DualWielding)
 				{
-					h.Stats.AttackSpeed.Final = w.AttackSpeed;
+					h.Stats.AttackSpeed.Bonus = w.AttackSpeed;
 					h.Stats.CritChancePhys.Bonus = w.CritChance;
 					h.Stats.CritDmgPhys.Bonus = w.CritDamage;
 				}
@@ -115,7 +117,7 @@ public static class HeroCalculator
 					{
 						Weapon o = (Weapon)h.EquippedOffhand;
 						h.Stats.DamageModifier.Bonus += o.DamageModifier / 2f;
-						h.Stats.AttackSpeed.Final = (w.AttackSpeed + o.AttackSpeed) / 2;
+						h.Stats.AttackSpeed.Bonus = (w.AttackSpeed + o.AttackSpeed) / 2;
 						h.Stats.CritChancePhys.Bonus = (w.CritChance + o.CritChance) / 2;
 						h.Stats.CritDmgPhys.Bonus = (w.CritDamage + o.CritDamage) / 2;
 					}
@@ -130,7 +132,7 @@ public static class HeroCalculator
 				h.Stats.DamageModifier.Bonus = w.DamageModifier;
 				if (!h.DualWielding)
 				{
-					h.Stats.AttackSpeed.Final = w.AttackSpeed;
+					h.Stats.AttackSpeed.Bonus = w.AttackSpeed;
 					h.Stats.CritChanceMage.Bonus = w.CritChance;
 					h.Stats.CritDmgMage.Bonus = w.CritDamage;
 				}
@@ -140,7 +142,7 @@ public static class HeroCalculator
 					{
 						Weapon o = (Weapon)h.EquippedOffhand;
 						h.Stats.DamageModifier.Bonus += o.DamageModifier / 2f;
-						h.Stats.AttackSpeed.Final = (w.AttackSpeed + o.AttackSpeed) / 2;
+						h.Stats.AttackSpeed.Bonus = (w.AttackSpeed + o.AttackSpeed) / 2;
 						h.Stats.CritChanceMage.Bonus = (w.CritChance + o.CritChance) / 2;
 						h.Stats.CritChanceMage.Bonus = (w.CritDamage + o.CritDamage) / 2;
 					}
@@ -215,54 +217,45 @@ public static class HeroCalculator
 		h.Stats.Health.Final = 30 + Convert.ToInt32(0.2f * h.Level * h.Stats.Vitality.Final) + h.Stats.Health.Bonus;
 		h.Stats.Defense.Final = (h.Stats.Fortitude.Final * 2) + h.Stats.Defense.Bonus;
 		h.Stats.Resistance.Final = (h.Stats.Will.Final * 2) + h.Stats.Resistance.Bonus;
+		h.Stats.DamageModifier.Final = h.Stats.DamageModifier.Bonus == 0f ? h.Stats.DamageModifier.Initial : h.Stats.DamageModifier.Bonus;
 
 		//crit rate is weird
 		//crit chance = (([attribute base] / 100) + 1 ) * WeaponCritChance )
 		//WeaponCritChance stored in CritChance.Bonus as bonuses could come from more than just the weapon
 		h.Stats.CritChancePhys.Final = (((float)h.Stats.Dexterity.Final / 100f) + 1f) * h.Stats.CritChancePhys.Bonus;
 		h.Stats.CritChanceMage.Final = (((float)h.Stats.Wisdom.Final / 100f) + 1f) * h.Stats.CritChanceMage.Bonus;
-		h.Stats.CritDmgPhys.Final = h.Stats.CritDmgPhys.Initial + h.Stats.CritDmgPhys.Bonus;
-		h.Stats.CritDmgMage.Final = h.Stats.CritDmgMage.Initial + h.Stats.CritDmgMage.Bonus;
+		h.Stats.CritDmgPhys.Final = h.Stats.CritDmgPhys.Bonus == 0f ? h.Stats.CritDmgPhys.Initial : h.Stats.CritDmgPhys.Bonus;
+		h.Stats.CritDmgMage.Final = h.Stats.CritDmgMage.Bonus == 0f ? h.Stats.CritDmgMage.Initial : h.Stats.CritDmgMage.Bonus;
 
-		if (!h.DualWielding)
+		if (h.EquippedMainHand != null)
 		{
-			if (h.EquippedMainHand != null)
-			{
-				h.Stats.AttackSpeed.Final = ((Weapon)h.EquippedMainHand).AttackSpeed;
-			}
-			else
-			{
-				h.Stats.AttackSpeed.Final = 1.0f;
-			}
+			h.Stats.AttackSpeed.Final = h.Stats.AttackSpeed.Bonus;
 		}
 		else
 		{
-			if (h.EquippedMainHand != null && h.EquippedOffhand != null)
-			{
-				h.Stats.AttackSpeed.Final = MathFunc.Round((((Weapon)h.EquippedMainHand).AttackSpeed + ((Weapon)h.EquippedOffhand).AttackSpeed) / 2, 2);
-			}
+			h.Stats.AttackSpeed.Final = h.Stats.AttackSpeed.Initial;
 		}
 
 		if (h.Phys)
 		{
 			if (!h.AlternateDmg)
 			{
-				h.Stats.DamagePhys.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Strength.Final * (float)h.Stats.DamagePhys.Bonus * h.Stats.DamageModifier.Final);
+				h.Stats.DamagePhys.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Strength.Final * h.Stats.DamageModifier.Final);
 			}
 			else
 			{
-				h.Stats.DamagePhys.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Dexterity.Final * (float)h.Stats.DamagePhys.Bonus * h.Stats.DamageModifier.Final);
+				h.Stats.DamagePhys.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Dexterity.Final * h.Stats.DamageModifier.Final);
 			}
 		}
 		else
 		{
 			if (!h.AlternateDmg)
 			{
-				h.Stats.DamageMage.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Intelligence.Final * (float)h.Stats.DamageMage.Bonus * h.Stats.DamageModifier.Final);
+				h.Stats.DamageMage.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Intelligence.Final * h.Stats.DamageModifier.Final);
 			}
 			else
 			{
-				h.Stats.DamageMage.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Wisdom.Final * (float)h.Stats.DamageMage.Bonus * h.Stats.DamageModifier.Final);
+				h.Stats.DamageMage.Final = 5 + Convert.ToInt32(0.2f * h.Level * (float)h.Stats.Wisdom.Final * h.Stats.DamageModifier.Final);
 			}
 		}
 	}

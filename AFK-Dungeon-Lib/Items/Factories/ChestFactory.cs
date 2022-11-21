@@ -9,6 +9,17 @@ public class ChestFactory
 	{
 		this.random = random;
 	}
+
+	public static Chest GetSimple()
+	{
+		List<EquipmentStat> listStats = new()
+		{
+			new(EquipmentMod.Vitality,50f),
+			new(EquipmentMod.Defense,30f),
+			new(EquipmentMod.Resistance,30f),
+		};
+		return new("Simple Chest", 0, Rarity.Rare, listStats);
+	}
 	public Chest CraftChest(Rarity r)
 	{
 		Rarity rarity = r;

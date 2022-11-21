@@ -13,6 +13,17 @@ public class WeaponFactory
 		this.random = random;
 	}
 
+	public static Weapon GetSimple()
+	{
+		List<EquipmentStat> listStats = new()
+		{
+			new(EquipmentMod.Strength,10f),
+			new(EquipmentMod.Dexterity,10f),
+			new(EquipmentMod.AttackSpeed,0.1f)
+		};
+		return new("Simple 1H Sword", false, 1, 1.5f, 0.05f, 0.5f, WeaponClass.OneHandedSword, Rarity.Rare, 1.0f, 0, listStats);
+	}
+
 	public Weapon CraftWeapon(Rarity r)
 	{
 		WeaponClass wepClass = RandomWeaponClass();

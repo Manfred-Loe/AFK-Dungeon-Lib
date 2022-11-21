@@ -45,6 +45,8 @@ public class Hero : IPawn
 		if (mainHand != null) { EquippedMainHand = mainHand; }
 		if (offHand != null) { EquippedOffhand = offHand; }
 
+		/*#! This needs to be change, only works for initialization on new character
+		  #! Saved Characters will be overwritten, this is bad. Leave for now, testing*/
 		InitializeAbilityScores();
 		HeroCalculator.CalcStats(this);
 	}
@@ -75,6 +77,90 @@ public class Hero : IPawn
 	public void IncrementLevel(int level)
 	{
 		Level += level;
+	}
+	public void LevelUp(StatsEnum ability)
+	{
+		if (AvailableAbilityPoints >= 0)
+		{
+			AvailableAbilityPoints--;
+			switch (ability)
+			{
+				case StatsEnum.Strength: Stats.Strength.Initial++; break;
+				case StatsEnum.Dexterity: Stats.Dexterity.Initial++; break;
+				case StatsEnum.Vitality: Stats.Vitality.Initial++; break;
+				case StatsEnum.Intelligence: Stats.Intelligence.Initial++; break;
+				case StatsEnum.Wisdom: Stats.Wisdom.Initial++; break;
+				case StatsEnum.Fortitude: Stats.Fortitude.Initial++; break;
+				case StatsEnum.Will: Stats.Will.Initial++; break;
+				default: AvailableAbilityPoints++; break;
+			}
+			HeroCalculator.CalcStats(this);
+		}
+	}
+	public bool EquipGear(IEquipment equipment, bool offhandWeapon)
+	{
+		EquipmentType type = offhandWeapon ? EquipmentType.OffHand : equipment.Type;
+		switch (type)
+		{
+			case EquipmentType.Helmet:
+				if (EquippedHelmet != null)
+				{
+					EquippedHelmet.EquippedTo = null;
+				}
+				EquippedHelmet = equipment;
+				break;
+			case EquipmentType.Boots:
+				if (EquippedBoots != null)
+				{
+					EquippedBoots.EquippedTo = null;
+				}
+				EquippedBoots = equipment;
+				break;
+			case EquipmentType.Chest:
+				if (EquippedChest != null)
+				{
+					EquippedChest.EquippedTo = null;
+				}
+				EquippedChest = equipment;
+				break;
+			case EquipmentType.Weapon:
+				if (EquippedOffhand != null)
+				{
+					if (((Weapon)equipment).TwoHanded)
+					{
+						return false;
+					}
+				}
+				if (EquippedMainHand != null)
+				{
+					EquippedMainHand.EquippedTo = null;
+				}
+				EquippedMainHand = equipment;
+				break;
+			case EquipmentType.OffHand:
+
+				if (EquippedMainHand is Weapon w)
+				{
+					if (w.TwoHanded)
+					{
+						return false;
+					}
+				}
+				if (EquippedOffhand != null)
+				{
+					EquippedOffhand.EquippedTo = null;
+				}
+				EquippedOffhand = equipment;
+				break;
+		}
+		HeroCalculator.CalcStats(this);
+		return true;
+	}
+	public void ResetHero()
+	{
+		AvailableAbilityPoints = 3 * Level;
+		InitializeAbilityScores();
+		HeroCalculator.CalcStats(this);
 	}
 	public void ChangeName(string newName)
 	{

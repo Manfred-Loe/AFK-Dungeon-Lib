@@ -3,7 +3,7 @@ using AFK_Dungeon_Lib.Pawns.Enemies;
 using AFK_Dungeon_Lib.Items.Equipment.Offhand;
 
 namespace AFK_Dungeon_Lib.Pawns.Factories;
-public static class EnemyFactory
+internal static class EnemyFactory
 {
 	public static Enemy GetMeleePhys(int level)
 	{

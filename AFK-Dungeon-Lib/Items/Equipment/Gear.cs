@@ -1,3 +1,5 @@
+using AFK_Dungeon_Lib.Pawns.Hero;
+
 namespace AFK_Dungeon_Lib.Items.Equipment;
 public class Gear : IEquipment
 {
@@ -6,6 +8,7 @@ public class Gear : IEquipment
 	public Rarity Rarity { get; set; }
 	public EquipmentType Type { get; set; }
 	public List<EquipmentStat> ItemStats { get; set; }
+	public Hero? EquippedTo { get; set; }
 
 	public Gear(string name, int level, Rarity r, EquipmentType t, List<EquipmentStat> stats)
 	{

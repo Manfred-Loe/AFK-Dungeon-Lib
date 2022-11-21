@@ -5,12 +5,9 @@ internal class GameDriver
 {
 	public UserAccount User { get; set; }
 
-	public GameDriver()
+	public GameDriver(UserAccount user)
 	{
-		User = new()
-		{
-			UserName = "Hells"
-		};
+		User = user;
 		AddFunds();
 	}
 

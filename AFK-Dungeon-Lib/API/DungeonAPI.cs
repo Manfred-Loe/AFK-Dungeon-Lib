@@ -4,14 +4,12 @@ namespace AFK_Dungeon_Lib.API;
 
 public class DungeonAPI
 {
-	readonly DungeonDriver driver;
+	internal DungeonDriver driver;
+	public DungeonState State;
+
 	internal DungeonAPI(DungeonDriver driver)
 	{
 		this.driver = driver;
-	}
-
-	public void NextStep()
-	{
-		driver.NextStep();
+		this.State = driver.DungeonState;
 	}
 }

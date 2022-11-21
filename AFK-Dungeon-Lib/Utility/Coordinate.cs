@@ -49,4 +49,5 @@ public struct Coordinate
 	public static Coordinate operator /(Coordinate a, Coordinate b) => new(a.X / b.X, a.Y / b.Y);
 	public static Coordinate operator /(Coordinate a, int value) => new(a.X + value, a.Y + value);
 	public override string ToString() => X.ToString() + ", " + Y.ToString();
+	public bool Equals(Coordinate c) { return X == c.X && Y == c.Y; }
 }

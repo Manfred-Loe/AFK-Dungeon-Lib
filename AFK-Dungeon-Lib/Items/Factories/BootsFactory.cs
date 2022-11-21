@@ -19,6 +19,17 @@ public class BootsFactory
 		this.random = random;
 	}
 
+	public static Boots GetSimple()
+	{
+		List<EquipmentStat> listStats = new()
+		{
+			new(EquipmentMod.Vitality,50f),
+			new(EquipmentMod.Dexterity,30f),
+			new(EquipmentMod.Wisdom,30f),
+		};
+		return new("Simple Boots", 0, Rarity.Rare, listStats);
+	}
+
 	public Boots CraftBoots(Rarity r)
 	{
 		Rarity rarity = r;

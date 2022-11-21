@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/d/Projects/Unity/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj": {}
+    "/d/Projects/Unity/AFK/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj": {}
   },
   "projects": {
-    "/d/Projects/Unity/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj": {
+    "/d/Projects/Unity/AFK/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/d/Projects/Unity/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
+        "projectUniqueName": "/d/Projects/Unity/AFK/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
         "projectName": "AFK-Dungeon-Lib",
-        "projectPath": "/d/Projects/Unity/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
+        "projectPath": "/d/Projects/Unity/AFK/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
         "packagesPath": "/home/hells/.nuget/packages/",
-        "outputPath": "/d/Projects/Unity/AFK-Dungeon-Lib/obj/",
+        "outputPath": "/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/hells/.nuget/NuGet/NuGet.Config"

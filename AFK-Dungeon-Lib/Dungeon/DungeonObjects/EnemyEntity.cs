@@ -7,7 +7,7 @@ using AFK_Dungeon_Lib.Pawns.Hero;
 
 namespace AFK_Dungeon_Lib.Dungeon.DungeonObjects;
 
-internal class EnemyEntity : IPawnEntity
+public class EnemyEntity : IPawnEntity
 {
 	public Coordinate Position { get; set; }
 	public IPawn Entity { get; set; }
@@ -60,7 +60,16 @@ internal class EnemyEntity : IPawnEntity
 	public void ApplyDamage(int damage, bool phys)
 	{
 		Enemy e = (Enemy)Entity;
-		float damageReduction = 1 - ((float)e.Stats.Defense.Final / ((float)e.Stats.Defense.Final + 540.0f));
+		float damageReduction;
+		if (phys)
+		{
+			damageReduction = 1 - ((float)e.Stats.Defense.Final / ((float)e.Stats.Defense.Final + GameConstants.DAMAGE_REDUCTION_MODIFIER));
+		}
+		else
+		{
+			damageReduction = 1 - ((float)e.Stats.Resistance.Final / ((float)e.Stats.Resistance.Final + GameConstants.DAMAGE_REDUCTION_MODIFIER));
+		}
+
 		e.Stats.Health.Current -= Convert.ToInt32(damage * damageReduction);
 		if (e.Stats.Health.Current <= 0)
 		{

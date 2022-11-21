@@ -7,7 +7,7 @@ using AFK_Dungeon_Lib.Pawns.Hero;
 
 namespace AFK_Dungeon_Lib.Dungeon;
 
-internal class DungeonState
+public class DungeonState
 {
 	public DateTime TimeStart;
 	public DateTime TimeEnd;
@@ -24,7 +24,7 @@ internal class DungeonState
 	public DungeonGrid DungeonGrid;
 	readonly public DungeonRandom Random;
 
-	public DungeonState(List<IPawn> heroes, DungeonRandom random, Zone currentZone, Floor currentFloor, Room currentRoom, int totalEnemiesKilledCount, int clearedRoomCount)
+	public DungeonState(List<Hero> heroes, DungeonRandom random, Zone currentZone, Floor currentFloor, Room currentRoom, int totalEnemiesKilledCount, int clearedRoomCount)
 	{
 		//initialize objects
 		this.Heroes = new();
@@ -40,10 +40,7 @@ internal class DungeonState
 		//fill heroes
 		for (int i = 0; i < heroes.Count; i++)
 		{
-			if (heroes[i] is Hero h)
-			{
-				Heroes.Add(new(h, h.Position, this));
-			}
+			Heroes.Add(new(heroes[i], heroes[i].Position, this));
 		}
 		//fill enemies
 		for (int i = 0; i < currentRoom.Enemies.Count; i++)

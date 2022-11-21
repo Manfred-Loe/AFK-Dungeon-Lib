@@ -3,7 +3,7 @@ using AFK_Dungeon_Lib.Dungeon.DungeonFactories;
 using AFK_Dungeon_Lib.IOC;
 
 namespace AFK_Dungeon_Lib.Dungeon;
-public class DungeonLoader
+internal class DungeonLoader
 {
 	public int InitialZoneLevel { get; }
 	public int CurrentZoneLevel { get; private set; }

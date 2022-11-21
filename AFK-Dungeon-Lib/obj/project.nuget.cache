@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TuiYEZHW2JWzQU+Z3ePnTPSI6Fx7Xe2TX+dAFdZMo/dTjE3GmSms+DUnKpmG1xjVNl3ZmgGdBz/ZQKN1MULVIw==",
+  "dgSpecHash": "Y6kArgIfRkv5CvkEyGtVMFSsI6rCuu1cND+tXa3cHLS9mpxTtPeCbom/rwpXc8ORGiFIORzZWbAF2Uh50n5C1Q==",
   "success": true,
-  "projectFilePath": "/d/Projects/Unity/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
+  "projectFilePath": "/d/Projects/Unity/AFK/AFK-Dungeon-Lib/AFK-Dungeon-Lib.csproj",
   "expectedPackageFiles": [
     "/home/hells/.nuget/packages/microsoft.netcore.platforms/1.0.1/microsoft.netcore.platforms.1.0.1.nupkg.sha512",
     "/home/hells/.nuget/packages/microsoft.netcore.targets/1.0.1/microsoft.netcore.targets.1.0.1.nupkg.sha512",

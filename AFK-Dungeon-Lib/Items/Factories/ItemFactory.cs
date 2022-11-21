@@ -6,11 +6,11 @@ namespace AFK_Dungeon_Lib.Items.Factories;
 public class ItemFactory
 {
 	readonly GameRandom random;
-	readonly HelmetFactory hf;
-	readonly ChestFactory cf;
-	readonly BootsFactory bf;
-	readonly WeaponFactory wf;
-	readonly OffhandFactory of;
+	readonly public HelmetFactory hf;
+	readonly public ChestFactory cf;
+	readonly public BootsFactory bf;
+	readonly public WeaponFactory wf;
+	readonly public OffhandFactory of;
 
 	public ItemFactory(GameRandom random, HelmetFactory hf, ChestFactory cf, BootsFactory bf, WeaponFactory wf, OffhandFactory of)
 	{
@@ -21,6 +21,7 @@ public class ItemFactory
 		this.wf = wf;
 		this.of = of;
 	}
+
 	// cC = createCommon, cU = createUncommon
 	//number chance, what "percent" chance it is that item. Note, it checks UP from the bottom
 	//i.e. if cC = 80 (80%), there's only a 20% chance it will even get to cU

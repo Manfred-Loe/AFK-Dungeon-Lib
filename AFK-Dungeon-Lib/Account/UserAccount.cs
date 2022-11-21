@@ -14,7 +14,7 @@ public class UserAccount
 	public UserAccount()
 	{
 		UserName = "New Player";
-		HeroList = new List<Hero>();
+		HeroList = new();
 		UserInventory = new Inventory();
 
 		TempUsers();
@@ -57,10 +57,24 @@ public class UserAccount
 		HeroList.Add(new Hero("Hero 2"));
 		HeroList.Add(new Hero("Hero 3"));
 		HeroList.Add(new Hero("Hero 4"));
+		HeroList[0].SetPosition(new(1, 0));
+		HeroList[1].SetPosition(new(1, 1));
+		HeroList[2].SetPosition(new(1, 2));
+		HeroList[3].SetPosition(new(1, 3));
 	}
 	public List<Hero> GetHeroes() { return HeroList; }
+	public List<Hero> CloneHeroes()
+	{
+		var clones = new List<Hero>();
+		foreach (var hero in HeroList)
+		{
+			var h = Clone.CloneObject<Hero>(hero);
+			if (h == null) { throw new NullReferenceException(); }
+			clones.Add(h);
+		}
+		return clones;
+	}
 	public Hero GetHero(int index) { return HeroList[index]; }
-	public Inventory GetInventory() { return UserInventory; }
 	//fetcher for settings
 
 }

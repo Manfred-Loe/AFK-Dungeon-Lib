@@ -8,17 +8,17 @@ using AFK_Dungeon_Lib.Dungeon.DungeonFactories;
 
 namespace AFK_Dungeon_Lib.Dungeon;
 
-internal class DungeonDriver
+public class DungeonDriver
 {
-	readonly DungeonState DungeonState;
-	public DungeonDriver(List<IPawn> heroes, GameConfig gc, ZoneFactory zf, DungeonRandom random)
+	public readonly DungeonState DungeonState;
+	public DungeonDriver(ClonedHeroes clone, GameConfig gc, ZoneFactory zf, DungeonRandom random)
 	{
 		var dl = new DungeonLoader(gc, zf);
 		//load zone/floor/room
 		var zone = dl.GetCurrentZone();
 		var floor = zone.GetFloorByNumber(gc.CurrentFloor);
 		var room = floor.GetRoomByNumber(gc.CurrentRoom);
-		DungeonState = new(heroes, random, zone, floor, room, 0, 0);
+		DungeonState = new(clone.Heroes, random, zone, floor, room, 0, 0);
 	}
 
 	public void NextStep()
@@ -35,7 +35,7 @@ internal class DungeonDriver
 			//update DungeonState
 		}
 	}
-	private static int CompareDexterity(IPawnEntity x, IPawnEntity y)
+	internal static int CompareDexterity(IPawnEntity x, IPawnEntity y)
 	{
 		int returnValue;
 
@@ -67,7 +67,7 @@ internal class DungeonDriver
 		return returnValue;
 	}
 
-	public static List<IPawnEntity> GetInitialTurnOrder(List<HeroEntity> heroes, List<EnemyEntity> enemies)
+	internal static List<IPawnEntity> GetInitialTurnOrder(List<HeroEntity> heroes, List<EnemyEntity> enemies)
 	{
 		List<IPawnEntity> turns = new();
 		turns.AddRange(heroes);

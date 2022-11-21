@@ -11,6 +11,19 @@ public class OffhandFactory
 	{
 		this.random = random;
 	}
+
+	public static Offhand GetSimple()
+	{
+		List<EquipmentStat> listStats = new()
+		{
+			new(EquipmentMod.Vitality,50f),
+			new(EquipmentMod.Defense,30f),
+			new(EquipmentMod.Resistance,30f),
+		};
+
+		return new("Simple Shield", 0, Rarity.Rare, listStats, false, SpellModifier.None, OffhandClass.Shield);
+	}
+
 	public Offhand CraftOffhand(Rarity r)
 	{
 		Rarity rarity = r;

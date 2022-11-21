@@ -1,21 +1,29 @@
 using AFK_Dungeon_Lib.Account;
+using AFK_Dungeon_Lib.Dungeon;
 using AFK_Dungeon_Lib.IOC;
+using AFK_Dungeon_Lib.Items.Factories;
+using AFK_Dungeon_Lib.Pawns.Hero;
 
 namespace AFK_Dungeon_Lib.API;
 public class AFKDungeon
 {
-	public UserAccount user;
-	public GameConfig config;
-	public GameContainer gc;
+	internal GameConfig config;
+	internal GameContainer gc;
 	public DungeonAPI dungeon;
-	public GameAPI game;
+	public GameAPI data;
+	readonly public ItemFactory itemfactory;
 
-	public AFKDungeon(/*account loading parameters*/)
+	public AFKDungeon()
 	{
-		user = new();
-		config = new(1, 1, 1, 1, 1, null, null);
+		UserAccount user = new();
+		config = new(GameConstants.DEFAULT_SCALING, 1, 1, 1, 1, null, null);
 		gc = new(user, config);
-		dungeon = gc.container.GetInstance<DungeonAPI>();
-		game = gc.container.GetInstance<GameAPI>();
+		this.dungeon = new(gc.container.GetInstance<DungeonDriver>());
+		this.data = new(gc.container.GetInstance<GameDriver>());
+		this.itemfactory = gc.container.GetInstance<ItemFactory>();
+	}
+
+	public void StartDungeon()
+	{
 	}
 }

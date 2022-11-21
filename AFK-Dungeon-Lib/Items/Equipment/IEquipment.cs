@@ -1,3 +1,5 @@
+using AFK_Dungeon_Lib.Pawns.Hero;
+
 namespace AFK_Dungeon_Lib.Items.Equipment;
 
 //TStat = Stat Type, TEnum = Enum Type
@@ -8,6 +10,7 @@ public interface IEquipment
 	Rarity Rarity { get; set; }
 	EquipmentType Type { get; set; }
 	List<EquipmentStat> ItemStats { get; set; }
+	Hero? EquippedTo { get; set; }
 
 	EquipmentMod GetStatType(int i);
 	List<EquipmentMod> GetAllStatTypes();

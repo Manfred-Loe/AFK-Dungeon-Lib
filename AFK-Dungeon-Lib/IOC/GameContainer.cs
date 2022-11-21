@@ -18,10 +18,7 @@ public class GameContainer
 		//register game configuration and user
 		container.RegisterInstance<UserAccount>(user);
 		container.RegisterInstance<GameConfig>(config);
-
-		//register API
-		container.Register<DungeonAPI>(Lifestyle.Singleton);
-		container.Register<GameAPI>(Lifestyle.Singleton);
+		container.RegisterInstance<ClonedHeroes>(new(user));
 
 		//register randoms
 		container.Register<GameRandom>(Lifestyle.Singleton);
@@ -29,6 +26,7 @@ public class GameContainer
 		//register game driver and dungeon driver
 		container.Register<GameDriver>(Lifestyle.Singleton);
 		container.Register<DungeonDriver>(Lifestyle.Singleton);
+
 		//register all factories
 		//item factories
 		container.Register<BootsFactory>(Lifestyle.Singleton);

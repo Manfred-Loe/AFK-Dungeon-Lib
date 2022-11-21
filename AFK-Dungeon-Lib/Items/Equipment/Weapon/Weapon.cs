@@ -1,3 +1,4 @@
+using AFK_Dungeon_Lib.Pawns.Hero;
 namespace AFK_Dungeon_Lib.Items.Equipment.Weapon;
 public class Weapon : IEquipment
 {
@@ -6,6 +7,7 @@ public class Weapon : IEquipment
 	public Rarity Rarity { get; set; }
 	public EquipmentType Type { get; set; }
 	public List<EquipmentStat> ItemStats { get; set; }
+	public Hero? EquippedTo { get; set; }
 	public bool TwoHanded { get; }
 	public float AttackSpeed { get; }
 	public float DamageModifier { get; }

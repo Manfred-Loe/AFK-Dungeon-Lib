@@ -10,7 +10,7 @@ using AFK_Dungeon_Lib.Items.Equipment.Offhand;
 
 namespace AFK_Dungeon_Lib.Dungeon.DungeonObjects;
 
-internal class HeroEntity : IPawnEntity
+public class HeroEntity : IPawnEntity
 {
 	public Coordinate Position { get; set; }
 	public IPawn Entity { get; set; }
@@ -139,11 +139,11 @@ internal class HeroEntity : IPawnEntity
 		float damageReduction;
 		if (phys)
 		{
-			damageReduction = 1 - ((float)h.Stats.Defense.Final / ((float)h.Stats.Defense.Final + 540.0f));
+			damageReduction = 1 - ((float)h.Stats.Defense.Final / ((float)h.Stats.Defense.Final + GameConstants.DAMAGE_REDUCTION_MODIFIER));
 		}
 		else
 		{
-			damageReduction = 1 - ((float)h.Stats.Resistance.Final / ((float)h.Stats.Resistance.Final + 540.0f));
+			damageReduction = 1 - ((float)h.Stats.Resistance.Final / ((float)h.Stats.Resistance.Final + GameConstants.DAMAGE_REDUCTION_MODIFIER));
 		}
 
 		h.Stats.Health.Current -= Convert.ToInt32(damage * damageReduction);

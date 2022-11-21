@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace AFK_Dungeon_Lib.Pawns.Enemies
 {
-	public static class EnemyCalculator
+	internal static class EnemyCalculator
 	{
 		public static void CalcStats(Enemy e)
 		{

@@ -1,12 +1,11 @@
 ﻿using AFK_Console.Game;
 
 namespace AFK_Console;
-internal class Program
+internal static class Program
 {
-	GameProgram game;
 	static void Main(string[] args)
 	{
-		game = new();
+		GameProgram game = new();
 		game.Run();
 	}
 }

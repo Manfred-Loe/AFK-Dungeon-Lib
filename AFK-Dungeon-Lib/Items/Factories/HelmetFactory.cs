@@ -11,6 +11,17 @@ public class HelmetFactory
 		this.random = random;
 	}
 
+	public static Helmet GetSimple()
+	{
+		List<EquipmentStat> listStats = new()
+		{
+			new(EquipmentMod.Vitality,50f),
+			new(EquipmentMod.Strength,30f),
+			new(EquipmentMod.Intelligence,30f),
+		};
+		return new("Simple Helmet", 0, Rarity.Rare, listStats);
+	}
+
 	public Helmet CraftHelmet(Rarity r)
 	{
 		var rarity = r;

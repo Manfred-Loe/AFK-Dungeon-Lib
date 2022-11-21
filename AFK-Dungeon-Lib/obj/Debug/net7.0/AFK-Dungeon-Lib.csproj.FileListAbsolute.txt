@@ -10,3 +10,15 @@
 /d/Projects/Unity/AFK-Dungeon-Lib/obj/Debug/net7.0/refint/AFK-Dungeon-Lib.dll
 /d/Projects/Unity/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.pdb
 /d/Projects/Unity/AFK-Dungeon-Lib/obj/Debug/net7.0/ref/AFK-Dungeon-Lib.dll
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/bin/Debug/net7.0/AFK-Dungeon-Lib.deps.json
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/bin/Debug/net7.0/AFK-Dungeon-Lib.dll
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/bin/Debug/net7.0/AFK-Dungeon-Lib.pdb
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.csproj.AssemblyReference.cache
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.GeneratedMSBuildEditorConfig.editorconfig
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.AssemblyInfoInputs.cache
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.AssemblyInfo.cs
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.csproj.CoreCompileInputs.cache
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.dll
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/refint/AFK-Dungeon-Lib.dll
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/AFK-Dungeon-Lib.pdb
+/d/Projects/Unity/AFK/AFK-Dungeon-Lib/obj/Debug/net7.0/ref/AFK-Dungeon-Lib.dll

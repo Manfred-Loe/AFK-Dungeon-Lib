@@ -10,13 +10,13 @@ public static class RoomFactory
 		var enemyList = new List<Enemy>();
 		var coordinateList = new List<Coordinate>();
 		enemyList.Add(EnemyFactory.GetMeleePhys(floorModifier));
-		coordinateList.Add(new Coordinate(0, 1));
+		coordinateList.Add(new Coordinate(2, 1));
 		enemyList.Add(EnemyFactory.GetMeleePhys(floorModifier));
-		coordinateList.Add(new Coordinate(0, 2));
+		coordinateList.Add(new Coordinate(2, 2));
 		enemyList.Add(EnemyFactory.GetRangePhys(floorModifier));
-		coordinateList.Add(new Coordinate(1, 1));
+		coordinateList.Add(new Coordinate(3, 1));
 		enemyList.Add(EnemyFactory.GetRangePhys(floorModifier));
-		coordinateList.Add(new Coordinate(1, 2));
+		coordinateList.Add(new Coordinate(3, 2));
 		return new Room(enemyList, coordinateList, roomNumber);
 	}
 
